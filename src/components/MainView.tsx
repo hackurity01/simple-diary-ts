@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDiaryHistory } from "../hooks/useDiaryHistory";
 import "./MainView.css";
+import { useQuestions } from "../hooks/useQuestions";
 
 interface MainViewProps {
   setView: (view: "main" | "history") => void;
@@ -13,19 +14,10 @@ function MainView({ setView }: MainViewProps) {
   const date = now.getDate();
   const today = `${year}년 ${month}월 ${date.toString().padStart(2, "0")}일`;
 
-  const [questions, setQuestions] = useState();
-
   const diary = useDiaryHistory();
   const [input, setInput] = useState(diary[today] || "");
 
-  useEffect(() => {
-    fetch("/questions.json")
-      .then((res) => res.json())
-      .then((data) => {
-        setQuestions(data);
-      });
-  }, []);
-
+  const questions = useQuestions();
   if (!questions) {
     return "loading";
   }
