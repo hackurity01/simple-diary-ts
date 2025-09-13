@@ -5,6 +5,8 @@ interface MainViewProps {
   setView: (view: "main" | "history") => void;
 }
 
+const diary = JSON.parse(window.localStorage.getItem("diary") || "{}");
+
 function MainView({ setView }: MainViewProps) {
   const now = new Date();
   const year = now.getFullYear();
@@ -13,6 +15,7 @@ function MainView({ setView }: MainViewProps) {
   const today = `${year}년 ${month}월 ${date}일`;
 
   const [questions, setQuestions] = useState();
+  const [input, setInput] = useState(diary[today] || "");
 
   useEffect(() => {
     fetch("/questions.json")
@@ -43,8 +46,14 @@ function MainView({ setView }: MainViewProps) {
       <div className="question">{questions[date]}</div>
       <div className="content">
         <textarea
-          onChange={() => {
-            console.log("onChange");
+          value={input}
+          onChange={(e) => {
+            const value = e.target.value;
+            setInput(value);
+            window.localStorage.setItem(
+              "diary",
+              JSON.stringify({ [today]: value })
+            );
           }}
         />
       </div>
