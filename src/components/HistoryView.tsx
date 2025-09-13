@@ -1,14 +1,12 @@
-import { useMemo } from "react";
 import "./HistoryView.css";
+import { useDiaryHistory } from "../hooks/useDiaryHistory";
 
 interface HistoryViewProps {
   setView: (view: "main" | "history") => void;
 }
 
 function HistoryView({ setView }: HistoryViewProps) {
-  const diary = useMemo<{ [key: string]: string }>(() => {
-    return JSON.parse(window.localStorage.getItem("diary") || "{}");
-  }, []);
+  const diary = useDiaryHistory();
   const history = Object.entries(diary)
     .map(([date, content]) => ({
       date,
