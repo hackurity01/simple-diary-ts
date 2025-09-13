@@ -12,7 +12,7 @@ function MainView({ setView }: MainViewProps) {
   const year = now.getFullYear();
   const month = now.getMonth() + 1;
   const date = now.getDate();
-  const today = `${year}년 ${month}월 ${date}일`;
+  const today = `${year}년 ${month}월 ${date.toString().padStart(2, "0")}일`;
 
   const [questions, setQuestions] = useState();
   const [input, setInput] = useState(diary[today] || "");
@@ -52,7 +52,7 @@ function MainView({ setView }: MainViewProps) {
             setInput(value);
             window.localStorage.setItem(
               "diary",
-              JSON.stringify({ [today]: value })
+              JSON.stringify({ ...diary, [today]: value })
             );
           }}
         />

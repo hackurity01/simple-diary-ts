@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import "./HistoryView.css";
 
 interface HistoryViewProps {
@@ -5,6 +6,16 @@ interface HistoryViewProps {
 }
 
 function HistoryView({ setView }: HistoryViewProps) {
+  const diary = useMemo<{ [key: string]: string }>(() => {
+    return JSON.parse(window.localStorage.getItem("diary") || "{}");
+  }, []);
+  const history = Object.entries(diary)
+    .map(([date, content]) => ({
+      date,
+      content,
+    }))
+    .sort((a, b) => (a.date < b.date ? 1 : -1));
+
   return (
     <>
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -17,10 +28,13 @@ function HistoryView({ setView }: HistoryViewProps) {
         </button>
         <h4>다이어리 기록</h4>
       </div>
-      <div className="diary-item">
-        <div className="diary-date">(날짜)</div>
-        <div>(내용)</div>
-      </div>
+      {history.length === 0 && <div>기록이 없습니다.</div>}
+      {history.map(({ date, content }) => (
+        <div className="diary-item" key={date}>
+          <div className="diary-date">{date}</div>
+          <div>{content}</div>
+        </div>
+      ))}
     </>
   );
 }
