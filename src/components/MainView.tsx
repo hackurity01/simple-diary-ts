@@ -1,4 +1,5 @@
 import type { View } from "../App";
+import { formatDate } from "../utils/date";
 import "./MainView.css";
 
 interface MainViewProps {
@@ -6,10 +7,12 @@ interface MainViewProps {
 }
 
 function MainView({ setView }: MainViewProps) {
+  const today = new Date();
+
   return (
     <>
       <div className="header">
-        <div>(오늘 날짜)</div>
+        <div>{formatDate(today)}</div>
         <div>
           <button
             className="history-btn"
