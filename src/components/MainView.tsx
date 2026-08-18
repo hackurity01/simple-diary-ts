@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { View } from "../App";
-import { formatDate } from "../utils/date";
+import { formatDate, toDateKey } from "../utils/date";
 import "./MainView.css";
 
 interface MainViewProps {
@@ -9,9 +9,16 @@ interface MainViewProps {
 
 function MainView({ setView }: MainViewProps) {
   const today = new Date();
+  const todayKey = toDateKey(today);
 
   // 질문 목록: 서버에서 받아오기 전까지는 undefined
   const [questions, setQuestions] = useState<Record<string, string>>();
+
+  // 저장된 일기 데이터: { "2026-08-18": "일기 내용", ... }
+  const savedDiary: Record<string, string> = JSON.parse(
+    window.localStorage.getItem("diary") || "{}"
+  );
+  const [input, setInput] = useState(savedDiary[todayKey] || "");
 
   useEffect(() => {
     fetch("/questions.json")
@@ -42,8 +49,14 @@ function MainView({ setView }: MainViewProps) {
       <div className="question">{questions[today.getDate()]}</div>
       <div className="content">
         <textarea
-          onChange={() => {
-            console.log("onChange");
+          value={input}
+          onChange={(e) => {
+            const value = e.target.value;
+            setInput(value);
+            window.localStorage.setItem(
+              "diary",
+              JSON.stringify({ [todayKey]: value })
+            );
           }}
         />
       </div>
