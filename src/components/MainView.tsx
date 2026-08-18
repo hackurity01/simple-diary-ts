@@ -55,7 +55,7 @@ function MainView({ setView }: MainViewProps) {
             setInput(value);
             window.localStorage.setItem(
               "diary",
-              JSON.stringify({ [todayKey]: value })
+              JSON.stringify({ ...savedDiary, [todayKey]: value })
             );
           }}
         />
