@@ -1,4 +1,5 @@
 import type { View } from "../App";
+import { useDiary } from "../hooks/useDiary";
 import { formatDate } from "../utils/date";
 import "./HistoryView.css";
 
@@ -7,9 +8,7 @@ interface HistoryViewProps {
 }
 
 function HistoryView({ setView }: HistoryViewProps) {
-  const diary: Record<string, string> = JSON.parse(
-    window.localStorage.getItem("diary") || "{}"
-  );
+  const { diary } = useDiary();
 
   // { 날짜키: 내용 } 객체를 최신 날짜부터 보이는 배열로 변환
   const history = Object.entries(diary)
