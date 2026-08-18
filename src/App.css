@@ -1,8 +1,21 @@
 .container {
   max-width: 400px;
-  background: #f7f7f7;
-  margin: auto;
-  height: 100vh;
-  padding: 20px 10px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 30px 24px 36px;
   box-sizing: border-box;
+  background: var(--paper);
+  box-shadow: 0 0 0 1px rgba(94, 80, 59, 0.07), 0 20px 50px rgba(94, 80, 59, 0.22);
+  position: relative;
+}
+
+/* 종이 상단의 얇은 포인트 라인 */
+.container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent), #d99a63);
 }
